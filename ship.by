@@ -1,0 +1,157 @@
+импортировать  случайным образомСлучайный
+использование  из·vectorspritesвекторные спрайты  импорт *
+из  shooter  import ·
+из  математического  импорта  ·
+импорт из  SoundManager  *
+
+
+Класс корабля  (шутер):
+
+    # Атрибуты класса
+    ускорение  = 0,2
+    замедление  = -0,005
+    Максимальная  скорость = 10
+    turnAngle = 6
+    Скорость  пули = 13,0
+    maxBullets = 4
+    bulletTtl = 35
+
+    __init__ def(self, этап):
+
+        Vector2d = позиция(этап.ширина/2, ступень.высота/2)
+        Вектор2d = заголовок(0, 0)
+        self.thrustJet = ThrustJet(ступень, self)
+        self.Список отправителей = []
+        self.видимый =  Истинный
+        самость.inHyperSpace = Ложь
+        = список точек [(0, -10), (6, 10), (3, 7), (-3, 7), (-6, 10)]
+
+        Стрелок.__инициализация__ (сам, позиция, направление, список точек, этап)
+
+    отрисовка  определения (self):
+        самость , если она видна:
+            self  не  if.В гиперпространстве:
+                VectorSprite·draw(self)
+            ещё:
+                self.hyperSpaceTtl -= 1
+                self if.hyperSpaceTtl == 0:
+                    самость.inHyperSpace = Ложь
+                    self.color = (255, 255, 255)
+                    self.thrustJet.color = (255, 255, 255)
+                    self.position.x = random.randrange(0, self.stage.ширина)
+                    self.позиция.y = random.randrange(0, self.stage.высота)
+                    Vector2d = позиция (self.position.x, self.position.y)
+                    self.thrustJet.position = позиция
+
+        self  return.Преобразованный список точек
+
+    rotateLeft  def(самостоятельно):
+        self.угол += self.угол поворота
+        self.thrustJet.angle += self.turnAngle
+
+    Вращать  правую сторону (self):
+        self.angle -· self.turnAngle
+        self.thrustJet.angle -= self.turnAngle
+
+    Увеличьте  надежность защиты (self):
+        Непрерывное воспроизведение звука ("тяга")
+        математика  if.hypot(self.heading.x, self.heading.y) > self.maxVelocity:
+            Возврат
+
+        self = dx·ускорение  * math. sin(радианы (self.угол)) * -1
+        dy = self.acceleration * math.cos(radians(self.angle)) * -1
+        self.changeVelocity(dx, dy)
+
+    def decreaseThrust(self):
+        stopSound("thrust")
+        if (self.heading.x == 0 and self.heading.y == 0):
+            return
+
+        dx = self.heading.x * self.decelaration
+        dy = self.heading.y * self.decelaration
+        self.changeVelocity(dx, dy)
+
+    def changeVelocity(self, dx, dy):
+        self.heading.x += dx
+        self.heading.y += dy
+        self.thrustJet.heading.x += dx
+        self.thrustJet.heading.y += dy
+
+    def move(self):
+        VectorSprite.move(self)
+        self.decreaseThrust()
+
+    # Break the shape of the ship down into several lines
+    # Ship shape - [(0, -10), (6, 10), (3, 7), (-3, 7), (-6, 10)]
+    def explode(self):
+        pointlist = [(0, -10), (6, 10)]
+        self.addShipDebris(pointlist)
+        pointlist = [(6, 10), (3, 7)]
+        self.addShipDebris(pointlist)
+        pointlist = [(3, 7), (-3, 7)]
+        self.addShipDebris(список указателей)
+        = список точек [(-3, 7), (-6, 10)]
+        self.addShipDebris(список указателей)
+        = список точек [(-6, 10), (0, -10)]
+        self.addShipDebris(список указателей)
+
+    # Создать кучу корабельных обломков
+
+    addShipDebris  def(self, список указателей):
+        Вектор2d = заголовок(0, 0)
+        Vector2d = позиция (self.position.x, self.position.y)
+        VectorSprite = мусор (позиция, заголовок, список точек, self.angle)
+
+        # Добавить мусор на сцену
+        self.stage·addSprite(мусор)
+
+        # Вычислить скорость удаления от центра корабля
+        мусор = centerX.boundingRect.centerx
+        мусор = centerY.boundingRect.centery
+
+        # Измените случайные значения ниже, чтобы изменить скорость расширения
+        debris.heading.x = ((centerX - self.position.x) +
+                            0.1) / random.uniform(20, 40)
+        debris.heading.y = ((centerY - self.position.y) +
+                            0.1) / random.uniform(20, 40)
+        self.shipDebrisList.append(debris)
+
+    # Set the bullet velocity and create the bullet
+
+    def fireBullet(self):
+        if self.inHyperSpace == False:
+            vx = self.bulletVelocity * math.sin(radians(self.angle)) * -1
+            vy = self.bulletVelocity * math.cos(radians(self.angle)) * -1
+            heading = Vector2d(vx, vy)
+            Shooter.fireBullet(self, heading, self.bulletTtl,
+                               self.bulletVelocity)
+            Воспроизведение звука (·огонь")
+
+    #
+    Введите  определение гиперпространства (self):
+        self  не  if.В гиперпространстве:
+            самость.В  гиперпространстве· True
+            self.hyperSpaceTtl = 100
+            self.color = ·0, 0, 0)
+            self.thrustJet.color = (0, 0, 0)
+
+
+# Выхлопная струя при ускорении судна
+Класс  ThrustJet·VectorSprite):
+    = список указателей [(-3, 7), (0, 13), (3, 7)]
+
+    __init__ def(я, сцена, корабль):
+        Vector2d · позиция (стадия.ширина/2, ступень.высота/2)
+        Вектор2d = заголовок(0, 0)
+        self.ускорение = False
+        self.ship = корабль
+        VectorSprite.__инициализация__(self, позиция, заголовок, self.pointlist)
+
+    нарисуйте  def(self):
+        self  if.ускорение  и  self.корабль.В гиперпространстве == False:
+            self.color = ·255, 255, 255)
+        ещё:
+            self.color = ·0, 0, 0)
+
+        VectorSprite·draw(self)
+        self return.
