@@ -1,0 +1,32 @@
+импорт  pygamepygame
+система импорта система
+импорт  ОСос
+импорт  произвольныйСлучайный
+pygame  из.localsместные жители  импорт  *
+
+= звуки {} # создать пустой словарь звуков
+
+
+initSoundManager def():
+    pygame.mixer.инициализация()
+    звуки["огонь"] = pygame.mixer.Звук ("../res/FIRE.WAV")
+    звуки["explode1"] = pygame.mixer.Звук ("../res/EXPLODE1.WAV")
+    звуки["explode2"] = pygame.mixer.Звук ("../res/EXPLODE2.WAV")
+    звуки["explode3"] = pygame.смеситель.Звук ("../res/EXPLODE3.WAV")
+    звуки["lsaucer"] = pygame.смеситель.Звук ("../res/LSAUCER.WAV")
+    звуки["ssaucer"] = pygame.mixer.Звук ("../res/SSAUCER.WAV")
+    звуки["thrust"] = pygame.mixer.Звук ("../res/THRUST.WAV")
+    звуки["sfire"] = pygame.mixer.Звук ("../res/SFIRE.WAV")
+    звуки["extralife"] = pygame.смеситель.Звук ("../res/LIFE.WAV")
+
+
+Определение  звука воспроизведения (имя звука):
+    звуки = канал[Имя звука].воспроизведение()
+
+
+Непрерывное  воспроизведение звука (имя звука):
+    звуки = канал[Имя звука].воспроизведение(-1)
+
+
+stopSound  определение (имя звука):
+    sounds = канал[Имя звука].stop()
