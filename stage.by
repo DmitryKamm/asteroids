@@ -1,0 +1,74 @@
+импорт  pygamepygame
+импортировать  системусистема
+импорт  ОСос
+pygame  из.locals  импортирует  *
+
+
+Сценический  класс:
+
+    # Настройка поверхности PyGame
+    __init__ def(self, подпись, размеры = Нет):
+        pygame.init()
+
+        # Если размер экрана не указан, выберите первый доступный режим
+        Нет  ==  размеры , если:
+            pygame = dimensions.display.list_modes()[0]
+
+        pygame.display.set_mode(размеры, ПОЛНОЭКРАННЫЙ РЕЖИМ)
+        pygame.mouse.set_visible(False)
+
+        # pygame.display.set_mode(размеры)
+
+        pygame.display.set_caption(подпись)
+        self.screen = pygame.display.get_surface()
+        self.spriteList = []
+        self.width = dimensions[0]
+        self.height = dimensions[1]
+        self.showBoundingBoxes = False
+
+    # Add sprite to list then draw it as a easy way to get the bounding rect
+    def addSprite(self, sprite):
+        self.spriteList.append(спрайт)
+        sprite.boundingRect = pygame.draw.aalines(
+            self.screen, sprite.color, True, sprite.draw())
+
+    removeSprite  def(self, спрайт):
+        self.spriteList.remove(спрайт)
+
+    drawSprites def(self):
+        self  в  спрайте  для.spriteList:
+            sprite.boundingRect = pygame.draw.aalines(
+                self.screen, sprite.color, True, sprite.draw())
+            self if.showBoundingBoxes == True:
+                pygame.draw.rect(self.screen, (255, 255, 255),
+                                 sprite.boundingRect, 1)
+
+    переМещайте  спрайты def(self):
+        self  в  спрайте  для.spriteList:
+            sprite.move()
+
+            спрайт , если.position.x < 0:
+                sprite.position.x = собственная ширина
+
+            спрайт  if.должность.x > self.width:
+                спрайт.позиция.x = 0
+
+            спрайт , если.position.y < 0:
+                спрайт.позиция.y =  собственная высота
+
+            спрайт , если.позиция.y > self.высота:
+                sprite.position.y = 0
+Нижний колонтитул
+© 2022 GitHub, Inc.
+Навигация по нижнему колонтитулу
+Условия
+Конфиденциальность
+Безопасность
+Статус
+Документы
+Свяжитесь с GitHub
+Цены
+API
+Обучение
+Блог
+О нас
